@@ -3,7 +3,7 @@ Author: Wang Jiaxuan
 */}
 import React from 'react';
 
-const ErrorComponent = ({ message }) => {
+const ErrorComponent = ({ message, straight=false }) => {
     return (
         <div
             className="flex flex-col justify-center items-center h-screen bg-white dark:bg-black text-black dark:text-white">
@@ -26,9 +26,11 @@ const ErrorComponent = ({ message }) => {
                 <path d="M12 17.0195V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p className="text-lg font-semibold">{message || 'An error occurred'}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                Please try again later.
-            </p>
+            {!straight && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    Please try again later.
+                </p>
+            )}
         </div>
     );
 };

@@ -1,14 +1,22 @@
+"use client"
+
 import React, { useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import RequestManager from '@/app/components/RequestManager';
 import Login from '@/app/components/Login';
 import LoadingComponent from '@/app/components/LoadingComponent';
 import ErrorComponent from '@/app/components/ErrorComponent';
 import Navbar from "@/app/components/Navbar";
+import { useAuth } from '../layout';
 
-const LoginContainer = () => {
+const App = () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect');
     const [loading, setLoading] = useState(false);  // Tracks the loading state
     const [error, setError] = useState(null);       // Tracks any error that occurs
     const [message, setMessage] = useState(null);   // Tracks success message
+    const { login } = useAuth();
 
     // Handler for form submission
     const handleLoginSubmit = (email, password) => {
@@ -51,17 +59,22 @@ const LoginContainer = () => {
     }
 
     if (message) {
-        // need to redirect
+        login();
+        if (redirect) {
+            router.push(redirect);
+        } else {
+            router.push('/');
+        }
     }
 
     return (
         <div>
             <Navbar />
             <div style={{marginTop: '4rem'}}>
-                {/*{content}*/}
+                {content}
             </div>
         </div>
     );
 };
 
-export default LoginContainer;
+export default App;
