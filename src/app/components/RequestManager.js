@@ -28,23 +28,15 @@ class RequestManager extends Component {
 
     // Function to recursively process the data to find and update 'image' keys
     addApiBaseUrlToImages(data, apiBaseUrl) {
-        // If data is an array, process each element
         if (Array.isArray(data)) {
+            // If data is an array, recursively process each element
             return data.map(item => this.addApiBaseUrlToImages(item, apiBaseUrl));
-        }
-
-        // If data is an object, process each key
-        if (typeof data === 'object' && data !== null) {
-            const result = { ...data };  // Create a copy of the object to avoid mutating original data
+        } else if (typeof data === 'object' && data !== null) {
+            // If data is an object, process each key
+            const result = { ...data };  // Create a copy of the object to avoid mutating the original
             Object.keys(result).forEach(key => {
                 if (key === 'image') {
-                    // If 'image' is an array, prepend apiBaseUrl to each element
-                    if (Array.isArray(result[key])) {
-                        result[key] = result[key].map(img => apiBaseUrl + img);
-                    } else {
-                        // If 'image' is a single string, prepend apiBaseUrl
-                        result[key] = apiBaseUrl + result[key];
-                    }
+                    result[key] = result[key].map(img => apiBaseUrl + "/image/" + img);
                 } else {
                     // Recursively process nested objects or arrays
                     result[key] = this.addApiBaseUrlToImages(result[key], apiBaseUrl);
@@ -53,7 +45,7 @@ class RequestManager extends Component {
             return result;
         }
 
-        // If data is neither object nor array, return it unchanged
+        // If data is not an array or object, return it unchanged
         return data;
     }
 
@@ -91,7 +83,7 @@ class RequestManager extends Component {
             let result = response.data;
 
             // Check if the server responded with success, else throw an error
-            if (!result.success) {
+            if (!result.success && !result) {
                 throw new Error('Failed to fetch data from the server.');
             }
 
