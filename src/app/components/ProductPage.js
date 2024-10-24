@@ -5,7 +5,7 @@ import CollapsiblePanel from "@/app/components/CollapsiblePanel";
 import Comment from "@/app/components/Comment";
 import RequestManager from './RequestManager'; // Import RequestManager component
 
-const ProductPage = ({ productData, apiBaseUrl }) => {
+const ProductPage = ({ productData }) => {
     const [quantity, setQuantity] = useState(1);
     const [isWishlistActive, setIsWishlistActive] = useState(false);
     const [isDescriptionOpen, setDescriptionOpen] = useState(false);
@@ -17,7 +17,7 @@ const ProductPage = ({ productData, apiBaseUrl }) => {
     const [errorAnimateIn, setErrorAnimateIn] = useState(false);
     const [sendRequest, setSendRequest] = useState(false); // New state to control sending the request
 
-    const { name, price, description, images, feature, reviews } = productData;
+    const { name, price, description, image, feature, reviews, originPrice } = productData;
 
     const toggleDescriptionBar = useCallback(() => {
         setDescriptionOpen(prevState => !prevState);
@@ -100,7 +100,7 @@ const ProductPage = ({ productData, apiBaseUrl }) => {
         <main className="flex min-h-full p-8 gap-x-8 bg-gray-100 dark:bg-gray-900">
             <section className="w-full lg:w-3/5 flex flex-col overflow-auto">
                 <div className="mb-8 mt-4">
-                    <ImageCarousel images={images} />
+                    <ImageCarousel image={image} />
                 </div>
                 <div className="mb-8 mt-4 flex-grow">
                     <CollapsiblePanel title="Description" isOpen={isDescriptionOpen} toggle={toggleDescriptionBar}>
@@ -116,7 +116,7 @@ const ProductPage = ({ productData, apiBaseUrl }) => {
                                         key={index}
                                         userName={review.userName}
                                         rating={review.rating}
-                                        date={review.date}
+                                        date={review.timestamp}
                                         comment={review.comment}
                                     />
                                 ))
@@ -150,18 +150,18 @@ const ProductPage = ({ productData, apiBaseUrl }) => {
                 </div>
 
                 <div className="mb-4">
-                    {feature.name !== "None" && (
+                    {feature !== "None" && (
                         <div
                             className="inline-block px-4 py-1 bg-blue-900 text-white font-medium rounded-xl text-sm shadow-lg border-2 border-white">
-                            {feature.name}
+                            {feature}
                         </div>
                     )}
                 </div>
 
                 <div className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-8">
                     <b className="text-gray-900 dark:text-gray-200">From ${price}</b>
-                    {feature.name === "Promo" && (
-                        <s className="text-gray-500 dark:text-gray-400 ml-2">${feature.details.originalPrice}</s>
+                    {feature === "Promo" && (
+                        <s className="text-gray-500 dark:text-gray-400 ml-2">${originPrice}</s>
                     )}
                 </div>
 

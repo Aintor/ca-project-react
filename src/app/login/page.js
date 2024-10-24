@@ -3,6 +3,7 @@ import RequestManager from '@/app/components/RequestManager';
 import Login from '@/app/components/Login';
 import LoadingComponent from '@/app/components/LoadingComponent';
 import ErrorComponent from '@/app/components/ErrorComponent';
+import Navbar from "@/app/components/Navbar";
 
 const LoginContainer = () => {
     const [loading, setLoading] = useState(false);  // Tracks the loading state
@@ -36,21 +37,29 @@ const LoginContainer = () => {
         );
     };
 
+    let content = (
+        <Login
+            onSubmit={handleLoginSubmit}  // Inject submit handler
+        />
+    );
+    if (loading) {
+        content = (<LoadingComponent />);
+    }
+
+    if (error) {
+        content = (<ErrorComponent error={error} />);
+    }
+
+    if (message) {
+        // need to redirect
+    }
+
     return (
-        <div className="login-container">
-            {/* Display loading state */}
-            {loading && <LoadingComponent />}
-
-            {/* Display error if any */}
-            {error && <ErrorComponent message={error} />}
-
-            {/* Display success message if login is successful */}
-            {message && <div className="success-message">{message}</div>}
-
-            {/* Login Form */}
-            <Login
-                onSubmit={handleLoginSubmit}  // Inject submit handler
-            />
+        <div>
+            <Navbar />
+            <div style={{marginTop: '4rem'}}>
+                {/*{content}*/}
+            </div>
         </div>
     );
 };

@@ -26,6 +26,37 @@ class RequestManager extends Component {
         }
     }
 
+    // Function to recursively process the data to find and update 'image' keys
+    addApiBaseUrlToImages(data, apiBaseUrl) {
+        // If data is an array, process each element
+        if (Array.isArray(data)) {
+            return data.map(item => this.addApiBaseUrlToImages(item, apiBaseUrl));
+        }
+
+        // If data is an object, process each key
+        if (typeof data === 'object' && data !== null) {
+            const result = { ...data };  // Create a copy of the object to avoid mutating original data
+            Object.keys(result).forEach(key => {
+                if (key === 'image') {
+                    // If 'image' is an array, prepend apiBaseUrl to each element
+                    if (Array.isArray(result[key])) {
+                        result[key] = result[key].map(img => apiBaseUrl + img);
+                    } else {
+                        // If 'image' is a single string, prepend apiBaseUrl
+                        result[key] = apiBaseUrl + result[key];
+                    }
+                } else {
+                    // Recursively process nested objects or arrays
+                    result[key] = this.addApiBaseUrlToImages(result[key], apiBaseUrl);
+                }
+            });
+            return result;
+        }
+
+        // If data is neither object nor array, return it unchanged
+        return data;
+    }
+
     async fetchData() {
         const { endpoint, method = 'GET', options = {} } = this.props;
         const { onSuccess, onError, onLoading } = this.props;
@@ -39,30 +70,33 @@ class RequestManager extends Component {
         try {
             let response;
 
-            // Switch case to handle different request methods
+            // Handle different request methods
             switch (method) {
                 case 'GET':
-                    response = await axios.get(apiBaseUrl+endpoint, { timeout: 10000, ...options });
+                    response = await axios.get(apiBaseUrl + endpoint, { timeout: 10000, ...options });
                     break;
                 case 'POST':
-                    response = await axios.post(apiBaseUrl+endpoint, options.data, { timeout: 10000, ...options });
+                    response = await axios.post(apiBaseUrl + endpoint, options.data, { timeout: 10000, ...options });
                     break;
                 case 'PUT':
-                    response = await axios.put(apiBaseUrl+endpoint, options.data, { timeout: 10000, ...options });
+                    response = await axios.put(apiBaseUrl + endpoint, options.data, { timeout: 10000, ...options });
                     break;
                 case 'DELETE':
-                    response = await axios.delete(apiBaseUrl+endpoint, { timeout: 10000, ...options });
+                    response = await axios.delete(apiBaseUrl + endpoint, { timeout: 10000, ...options });
                     break;
                 default:
                     throw new Error(`Unsupported request method: ${method}`);
             }
 
-            const result = response.data;
+            let result = response.data;
 
             // Check if the server responded with success, else throw an error
             if (!result.success) {
                 throw new Error('Failed to fetch data from the server.');
             }
+
+            // If the data is valid, process it to prepend apiBaseUrl to image keys
+            // result = this.addApiBaseUrlToImages(result, apiBaseUrl);
 
             this.setState({ data: result, loading: false, error: null });
 

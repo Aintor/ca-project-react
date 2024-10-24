@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import LoadingComponent from './LoadingComponent';
 import SquareImageDisplay from "@/app/components/SquareImageDisplay";
 
-const ProductCard = ({ image, feature, name, price, productId }) => {
+const ProductCard = ({ image, feature, name, price, id, originPrice }) => {
     const router = useRouter();
     const [isImageVisible, setIsImageVisible] = useState(false); // Detects if card is in the viewport
     const [isImageLoaded, setIsImageLoaded] = useState(false);   // Tracks if image has loaded
@@ -47,7 +47,7 @@ const ProductCard = ({ image, feature, name, price, productId }) => {
     };
 
     const handleClick = () => {
-        router.push(`/product?productId=${productId}`);
+        router.push(`/product?id=${id}`);
     };
 
     return (
@@ -80,7 +80,7 @@ const ProductCard = ({ image, feature, name, price, productId }) => {
                             <div className="absolute inset-0 bg-white/50 dark:bg-black/50 backdrop-blur-lg"></div>
                         </div>
 
-                        <SquareImageDisplay image={image} feature={feature} />
+                        <SquareImageDisplay image={image} feature={feature}/>
                     </>
                 )}
 
@@ -101,9 +101,9 @@ const ProductCard = ({ image, feature, name, price, productId }) => {
 
                 <div className="mt-2">
                     <b className="text-lg font-semibold text-gray-900 dark:text-gray-200">${price}</b>
-                    {feature.name === "Promo" && (
+                    {feature === "Promo" && (
                         <s className="ml-2 text-sm text-gray-500 dark:text-gray-400">
-                            ${feature.details?.originalPrice}
+                            ${originPrice}
                         </s>
                     )}
                 </div>

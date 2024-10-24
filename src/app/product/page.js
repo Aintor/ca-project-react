@@ -61,7 +61,7 @@ function App() {
                 {/* Conditionally render based on the loading, error, and data state */}
                 {loading && <LoadingComponent />}
                 {error && <ErrorComponent message={error} />}
-                {productData && <ProductPage productData={productData} apiBaseUrl={apiBaseUrl} />}
+                {productData && <ProductPage productData={productData} />}
             </div>
         </div>
     );

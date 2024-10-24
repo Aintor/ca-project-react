@@ -5,7 +5,7 @@ Note: For this component, I refer to the one on apple.com.
 */}
 import React, { useState } from 'react';
 
-const ImageCarousel = ({ images }) => {
+const ImageCarousel = ({ image }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handlePrevClick = () => {
@@ -13,7 +13,7 @@ const ImageCarousel = ({ images }) => {
     };
 
     const handleNextClick = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? prevIndex : prevIndex + 1));
+        setCurrentIndex((prevIndex) => (prevIndex === image.length - 1 ? prevIndex : prevIndex + 1));
     };
 
     return (
@@ -25,10 +25,10 @@ const ImageCarousel = ({ images }) => {
                     className="flex transition-transform duration-700 ease-out"
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                 >
-                    {images.map((image, index) => (
+                    {image.map((img, index) => (
                         <div key={index} className="flex-shrink-0 w-full h-full aspect-square">
                             <img
-                                src={image}
+                                src={img}
                                 alt={`Slide ${index + 1}`}
                                 className="w-full h-full object-cover"
                             />
@@ -51,7 +51,7 @@ const ImageCarousel = ({ images }) => {
             )}
 
             {/* Right arrow button (hidden on last image) */}
-            {currentIndex < images.length - 1 && (
+            {currentIndex < image.length - 1 && (
                 <button
                     onClick={handleNextClick}
                     aria-label="Next image"
@@ -66,7 +66,7 @@ const ImageCarousel = ({ images }) => {
             {/* Progress indicators with semi-transparent elliptical background */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-50 dark:bg-gray-700 dark:bg-opacity-50 px-4 py-2 rounded-full">
                 <div className="flex justify-center space-x-2">
-                    {images.map((_, index) => (
+                    {image.map((_, index) => (
                         <span
                             key={index}
                             className={`w-2 h-2 rounded-full transition-all duration-300 transform ${

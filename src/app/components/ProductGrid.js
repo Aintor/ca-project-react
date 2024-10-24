@@ -15,7 +15,8 @@ const ProductGrid = ({ products }) => {
                     feature={product.feature}
                     name={product.name}
                     price={product.price}
-                    productId={product.productId}
+                    id={product.id}
+                    originPrice={product.originPrice}
                 />
             ))}
 
