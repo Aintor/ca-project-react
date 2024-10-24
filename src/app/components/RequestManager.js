@@ -83,10 +83,9 @@ class RequestManager extends Component {
             let result = response.data;
 
             // Check if the server responded with success, else throw an error
-            if (!result.success && !result) {
+            if (!((result && typeof result.success === 'undefined') || (result && result.success))) {
                 throw new Error('Failed to fetch data from the server.');
             }
-
             // If the data is valid, process it to prepend apiBaseUrl to image keys
             // result = this.addApiBaseUrlToImages(result, apiBaseUrl);
 

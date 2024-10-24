@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import ImageCarousel from "@/app/components/ImageCarousel";
 import QuantitySelector from "@/app/components/QuantitySelector";
 import CollapsiblePanel from "@/app/components/CollapsiblePanel";
 import Comment from "@/app/components/Comment";
-import RequestManager from './RequestManager'; // Import RequestManager component
+import RequestManager from './RequestManager';
+import { useAuth } from '@/app/layout'
 
 const ProductPage = ({ productData }) => {
     const [quantity, setQuantity] = useState(1);
@@ -13,11 +14,12 @@ const ProductPage = ({ productData }) => {
     const [loading, setLoading] = useState(false);
     const [added, setAdded] = useState(false);
     const [error, setError] = useState(null);
-    const [showError, setShowError] = useState(false);
     const [errorAnimateIn, setErrorAnimateIn] = useState(false);
-    const [sendRequest, setSendRequest] = useState(false); // New state to control sending the request
-
+    const [sendRequest, setSendRequest] = useState(false);
+    const { isAuthenticated } = useAuth();
     const { name, price, description, image, feature, reviews, originPrice } = productData;
+
+    let errorAnimationTimeout;
 
     const toggleDescriptionBar = useCallback(() => {
         setDescriptionOpen(prevState => !prevState);
@@ -54,33 +56,22 @@ const ProductPage = ({ productData }) => {
         setIsWishlistActive(prevState => !prevState);
     };
 
-    useEffect(() => {
-        if (showError) {
-            setErrorAnimateIn(false);
-            setTimeout(() => {
-                setErrorAnimateIn(true);
-            }, 10);
-        }
-    }, [showError]);
-
     // Callback to handle success from RequestManager
     const handleSuccess = () => {
         setAdded(true);
-        setSendRequest(false); // Stop rendering RequestManager after the request is complete
+        setSendRequest(false);
     };
 
     // Callback to handle error from RequestManager
     const handleError = (errorMessage) => {
         setError(errorMessage);
-        setShowError(true);
-        setErrorAnimateIn(true);
+        if (errorAnimationTimeout) {
+            clearTimeout(errorAnimationTimeout);
+        }
+        setErrorAnimateIn(true)
 
-        setTimeout(() => {
+        errorAnimationTimeout = setTimeout(() => {
             setErrorAnimateIn(false);
-        }, 3000);
-
-        setTimeout(() => {
-            setShowError(false);
         }, 4000);
 
         setSendRequest(false); // Stop rendering RequestManager after an error
@@ -93,7 +84,11 @@ const ProductPage = ({ productData }) => {
 
     // This function sets sendRequest to true, triggering the request
     const handleSendInfo = () => {
-        setSendRequest(true); // Set state to true, triggering RequestManager rendering
+        if (isAuthenticated) {
+            setSendRequest(true); // Set state to true, triggering RequestManager rendering
+        } else {
+            handleError("Login required to proceed.");
+        }
     };
 
     return (
@@ -174,15 +169,13 @@ const ProductPage = ({ productData }) => {
                     disabled={added}
                 />
 
-                {showError && (
-                    <div
-                        className={`absolute -bottom-20 right-4 w-64 bg-red-500/80 text-white rounded-md shadow-lg p-4 transition-transform duration-1000 transform ${
-                            errorAnimateIn ? 'translate-x-0' : 'translate-x-[150%]'
-                        }`}
-                    >
-                        <p className="text-sm">{error}</p>
-                    </div>
-                )}
+                <div
+                    className={`absolute -bottom-20 right-4 w-64 bg-red-500/60 text-white rounded-md shadow-lg p-4 transition-transform duration-500 transform ${
+                        errorAnimateIn ? 'translate-x-0' : 'translate-x-[150%]'
+                    }`}
+                >
+                    <p className="text-sm">{error}</p>
+                </div>
 
                 <div className="flex space-x-8 mt-10 text-sm font-medium relative">
                     <button
