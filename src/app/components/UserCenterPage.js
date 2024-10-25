@@ -11,11 +11,13 @@ import axios from 'axios';
 const UserCenterPage = () => {
     const [activeTab, setActiveTab] = useState('AccountDetails');
     const { isAuthenticated, logout } = useAuth();
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     // Handle logout
     const handleLogout = async () => {
         try {
-            const response = await axios.post('/api/logout', {}, { withCredentials: true });
+            const response = await axios.post(apiBaseUrl+'/api/logout', {}, { withCredentials: true });
+            console.log(response);
             if (response.data.success) {
                 // Redirect to login page or homepage after logout
                 logout();
