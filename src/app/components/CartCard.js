@@ -114,15 +114,14 @@ const CartCard = ({ image = 'img/test1.jpg', feature = 'None', name = 'Product',
                             handleQuantityChange={(newQuantity) => handleQuantityChange(newQuantity)}
                             handleBlur={() => {}}
                             disabled={false}
-                            inputAllowed={false}
                         />
                     </div>
                 </div>
 
-                {/* Delete Button in Bottom Right */}
+                {/* Delete Text Button in Bottom Right */}
                 <button
                     onClick={handleDelete}
-                    className="absolute bottom-4 right-4 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
+                    className="absolute bottom-4 right-4 text-red-200 hover:text-red-600 transition"
                 >
                     Delete
                 </button>

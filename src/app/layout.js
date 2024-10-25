@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const fetchAccountDetails = async () => {
             try {
-                const response = await axios.get(apiBaseUrl+"/api/account/details", {timeout: 5000});
+                const response = await axios.get(apiBaseUrl+"/account/details", {timeout: 5000});
                 if (response.data) {
                     setIsAuthenticated(true);
                 } else {

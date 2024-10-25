@@ -7,7 +7,7 @@ import ErrorComponent from "@/app/components/ErrorComponent"
 import ProductCard from "@/app/components/ProductCard"
 import Login from "@/app/components/Login"
 import Register from "@/app/components/Register";
-import CartCard from "@/app/components/CartCard";
+import CartPage from "@/app/components/CartPage";
 
 function App() {
     const error = "Timeout";
@@ -15,7 +15,7 @@ function App() {
         <div>
             <Navbar/>
             <div style={{marginTop: '4rem'}}>
-                <CartCard/>
+               <CartPage/>
             </div>
         </div>
     );
