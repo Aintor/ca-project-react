@@ -23,6 +23,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     const login = () => {
         setIsAuthenticated(true);
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const fetchAccountDetails = async () => {
             try {
-                const response = await axios.get("/api/account/details", {timeout: 5000});
+                const response = await axios.get(apiBaseUrl+"/api/account/details", {timeout: 5000});
                 if (response.data) {
                     setIsAuthenticated(true);
                 } else {
