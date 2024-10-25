@@ -2,7 +2,7 @@ import { Component } from 'react';
 import axios from 'axios';
 
 class RequestManager extends Component {
-    static currentInstance = null;  // 静态属性，用于跟踪当前的实例
+    static currentInstance = null;  // Static property to track the current instance
 
     constructor(props) {
         super(props);
@@ -14,16 +14,15 @@ class RequestManager extends Component {
     }
 
     componentDidMount() {
-        // 如果已经有一个实例在运行，取消它
         if (RequestManager.currentInstance && RequestManager.currentInstance !== this) {
             console.log('Cancelling previous RequestManager instance');
             RequestManager.currentInstance.cancelRequest();
         }
 
-        // 设置当前实例为最新的 RequestManager
+        // Set the current instance to the latest RequestManager
         RequestManager.currentInstance = this;
 
-        // 执行数据请求
+        // Perform data request
         this.fetchData();
     }
 
@@ -38,7 +37,7 @@ class RequestManager extends Component {
     }
 
     componentWillUnmount() {
-        // 当组件卸载时，如果它是当前实例，将 currentInstance 设置为 null
+        // When the component unmounts, set currentInstance to null if it is this instance
         if (RequestManager.currentInstance === this) {
             console.log('Cancelling previous RequestManager instance');
             RequestManager.currentInstance = null;
@@ -46,10 +45,31 @@ class RequestManager extends Component {
     }
 
     cancelRequest() {
-        // 取消请求的逻辑：你可以在这里实现请求的取消，比如使用 axios 的 cancel token
+        // Logic for canceling the request: You can implement the cancellation using axios cancel token
         console.log('Request cancelled for', this.props.endpoint);
-        // 可以使用 axios cancelToken 来实际取消请求
+        // Cancel the request using axios cancel token here if needed
         this.setState({ loading: false, error: 'Request cancelled' });
+    }
+
+    // Function to recursively process the data to find and update 'image' keys
+    addApiBaseUrlToImages(data, apiBaseUrl) {
+        if (Array.isArray(data)) {
+            // If the data is an array, recursively process each element
+            return data.map(item => this.addApiBaseUrlToImages(item, apiBaseUrl));
+        } else if (typeof data === 'object' && data !== null) {
+            // If the data is an object, process each key
+            const result = { ...data };  // Create a copy of the object to avoid mutating the original
+            Object.keys(result).forEach(key => {
+                if (key === 'image') {
+                    result[key] = result[key].map(img => apiBaseUrl + "/image/" + img);
+                } else {
+                    // Recursively process nested objects or arrays
+                    result[key] = this.addApiBaseUrlToImages(result[key], apiBaseUrl);
+                }
+            });
+            return result;
+        }
+        return data;
     }
 
     async fetchData() {
@@ -70,7 +90,12 @@ class RequestManager extends Component {
                 case 'POST':
                     response = await axios.post(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
                     break;
-                // Handle other methods...
+                case 'PATCH':
+                    response = await axios.patch(apiBaseUrl + endpoint, { timeout: 10000, withCredentials: true, ...options });
+                    break;
+                case 'DELETE':
+                    response = await axios.delete(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
+                    break;
                 default:
                     throw new Error(`Unsupported request method: ${method}`);
             }
@@ -80,7 +105,12 @@ class RequestManager extends Component {
                 throw new Error('Failed to fetch data from the server.');
             }
 
+            // Process the data to add base URL to image fields
+            result = this.addApiBaseUrlToImages(result, apiBaseUrl);
+            console.log(result);
+
             this.setState({ data: result, loading: false, error: null });
+
             if (onSuccess) {
                 onSuccess(result);
             }
