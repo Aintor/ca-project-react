@@ -2,8 +2,9 @@
 import path from 'path';
 
 const nextConfig = {
+    reactStrictMode: false,  // prevent request twice
     webpack: (config) => {
-        config.resolve.alias = {
+            config.resolve.alias = {
             ...config.resolve.alias,
             '@/components': path.join(process.cwd(), 'src', 'app', 'components'),
             '@/public/img': path.join(process.cwd(), 'public', 'img'),
