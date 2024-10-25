@@ -17,7 +17,7 @@ const ProductPage = ({ productData }) => {
     const [errorAnimateIn, setErrorAnimateIn] = useState(false);
     const [sendRequest, setSendRequest] = useState(false);
     const { isAuthenticated } = useAuth();
-    const { name, price, description, image, feature, reviews, originPrice } = productData;
+    const { name, price, description, image, feature, reviews, originPrice, id } = productData;
 
     let errorAnimationTimeout;
 
@@ -193,14 +193,8 @@ const ProductPage = ({ productData }) => {
             {/* Render RequestManager component only when sendRequest is true */}
             {sendRequest && (
                 <RequestManager
-                    endpoint={`/cart`}
+                    endpoint ={`/cart?amount=${quantity}&productId=${id}`}
                     method="POST"
-                    options={{
-                        params: {
-                            amount: quantity,
-                            productId: productData.id,
-                        }
-                    }}
                     onSuccess={handleSuccess}
                     onError={handleError}
                     onLoading={handleLoading}

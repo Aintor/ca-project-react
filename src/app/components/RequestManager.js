@@ -65,22 +65,26 @@ class RequestManager extends Component {
             // Handle different request methods
             switch (method) {
                 case 'GET':
-                    response = await axios.get(apiBaseUrl + endpoint, { timeout: 10000, ...options });
+                    response = await axios.get(apiBaseUrl + endpoint, { timeout: 10000, withCredentials: true, ...options });
                     break;
                 case 'POST':
-                    response = await axios.post(apiBaseUrl + endpoint, options.data, { timeout: 10000, ...options });
+                    response = await axios.post(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
                     break;
                 case 'PUT':
-                    response = await axios.put(apiBaseUrl + endpoint, options.data, { timeout: 10000, ...options });
+                    response = await axios.put(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
+                    break;
+                case 'PATCH':
+                    response = await axios.patch(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
                     break;
                 case 'DELETE':
-                    response = await axios.delete(apiBaseUrl + endpoint, { timeout: 10000, ...options });
+                    response = await axios.delete(apiBaseUrl + endpoint, { timeout: 10000, withCredentials: true, ...options });
                     break;
                 default:
                     throw new Error(`Unsupported request method: ${method}`);
             }
 
             let result = response.data;
+            console.log(typeof result);
 
             // Check if the server responded with success, else throw an error
             if (!((result && typeof result.success === 'undefined') || (result && result.success))) {

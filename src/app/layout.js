@@ -2,7 +2,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
 import Navbar from "@/app/components/Navbar";
 import LoadingComponent from "@/app/components/LoadingComponent";
 
@@ -22,46 +21,36 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const sessionTimeout = 7 * 24 * 60 * 60 * 1000;
+
+    useEffect(() => {
+        const storedAuthStatus = localStorage.getItem("isAuthenticated");
+        const loginTimestamp = localStorage.getItem("loginTimestamp");
+
+        if (storedAuthStatus === "true" && loginTimestamp) {
+            const currentTime = new Date().getTime();
+            const elapsedTime = currentTime - parseInt(loginTimestamp, 10);
+
+            if (elapsedTime < sessionTimeout) {
+                setIsAuthenticated(true);
+            } else {
+                logout();
+            }
+        }
+    }, []);
 
     const login = () => {
+        const loginTimestamp = new Date().getTime();
         setIsAuthenticated(true);
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("loginTimestamp", loginTimestamp.toString());
     };
 
     const logout = () => {
         setIsAuthenticated(false);
+        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("loginTimestamp");
     };
-
-    useEffect(() => {
-        const fetchAccountDetails = async () => {
-            try {
-                const response = await axios.get(apiBaseUrl+"/account/details", {timeout: 5000});
-                if (response.data) {
-                    setIsAuthenticated(true);
-                } else {
-                    console.log("Failed to load user info (no data returned)");
-                }
-            } catch (error) {
-                console.log("Error loading user info:", error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchAccountDetails();
-    }, []);
-
-    if (loading) {
-        return (
-            <div>
-                <Navbar/>
-                <div style={{marginTop: '4rem'}}>
-                    <LoadingComponent />
-                </div>
-            </div>
-        );
-    }
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

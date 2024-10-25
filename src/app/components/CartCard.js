@@ -4,7 +4,7 @@ import LoadingComponent from './LoadingComponent';
 import SquareImageDisplay from "@/app/components/SquareImageDisplay";
 import QuantitySelector from "@/app/components/QuantitySelector";
 
-const CartCard = ({ image = 'img/test1.jpg', feature = 'None', name = 'Product', price = '299.99', id = 12345, quantity = 1, onQuantityChange, onDelete }) => {
+const CartCard = ({ image = 'img/test1.jpg', feature = 'None', name = 'Product', price = '299.99', id = 12345, quantity = 1, onQuantityChange, onDelete, disabled }) => {
     const router = useRouter();
     const [isImageVisible, setIsImageVisible] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -113,7 +113,8 @@ const CartCard = ({ image = 'img/test1.jpg', feature = 'None', name = 'Product',
                             handleDecrement={() => handleQuantityChange(quantity - 1)}
                             handleQuantityChange={(newQuantity) => handleQuantityChange(newQuantity)}
                             handleBlur={() => {}}
-                            disabled={false}
+                            disabled={disabled}
+                            inputAllowed={false}
                         />
                     </div>
                 </div>
@@ -122,6 +123,7 @@ const CartCard = ({ image = 'img/test1.jpg', feature = 'None', name = 'Product',
                 <button
                     onClick={handleDelete}
                     className="absolute bottom-4 right-4 text-red-200 hover:text-red-600 transition"
+                    disabled={disabled}
                 >
                     Delete
                 </button>
