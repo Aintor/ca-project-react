@@ -170,7 +170,7 @@ const ProductPage = ({ productData }) => {
                 />
 
                 <div
-                    className={`absolute -bottom-20 right-4 w-64 bg-red-500/60 text-white rounded-md shadow-lg p-4 transition-transform duration-500 transform ${
+                    className={`absolute -bottom-20 right-4 w-64 bg-red-500/60 text-gray-800 dark:text-white rounded-md shadow-lg p-4 transition-transform duration-500 transform ${
                         errorAnimateIn ? 'translate-x-0' : 'translate-x-[150%]'
                     }`}
                 >

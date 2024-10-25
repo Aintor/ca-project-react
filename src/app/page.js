@@ -48,7 +48,7 @@ const App = () => {
         if (categoryId === null) {
             method = 'POST';
             endpoint = '/products';
-        } else if (1 <= categoryId && categoryId <= 5) {
+        } else if (Number.isInteger(Number(categoryId)) && Number(categoryId) >= 1 && Number(categoryId) <= 5) {
             endpoint = `/products/${categoryId}`; // Fetch products by category
         } else {
             router.push('/not-found');

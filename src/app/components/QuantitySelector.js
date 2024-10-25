@@ -3,7 +3,7 @@ Author: Wang Jiaxuan
 */}
 import React from 'react';
 
-const QuantitySelector = ({ quantity, handleIncrement, handleDecrement, handleQuantityChange, handleBlur, disabled }) => {
+const QuantitySelector = ({ quantity, handleIncrement, handleDecrement, handleQuantityChange, handleBlur, disabled, input_allowed= true }) => {
     return (
         <div className="mt-6 mb-4">
             <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -26,7 +26,7 @@ const QuantitySelector = ({ quantity, handleIncrement, handleDecrement, handleQu
                     onBlur={handleBlur}
                     aria-label="Quantity"
                     className="w-16 text-center border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 h-10"
-                    disabled={disabled}
+                    disabled={disabled && input_allowed}
                 />
                 <button
                     type="button"
