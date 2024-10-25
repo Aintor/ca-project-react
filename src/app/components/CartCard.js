@@ -4,7 +4,7 @@ import LoadingComponent from './LoadingComponent';
 import SquareImageDisplay from "@/app/components/SquareImageDisplay";
 import QuantitySelector from "@/app/components/QuantitySelector";
 
-const CartCard = ({ image = 'img/test1.jpg', feature = 'None', name = 'Product', price = '299.99', id = 12345, quantity = 1, onQuantityChange, onDelete, disabled }) => {
+const CartCard = ({ image, feature, name, price, id, quantity, onQuantityChange, onDelete, disabled }) => {
     const router = useRouter();
     const [isImageVisible, setIsImageVisible] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);

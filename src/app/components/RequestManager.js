@@ -106,7 +106,7 @@ class RequestManager extends Component {
             }
 
             // Process the data to add base URL to image fields
-            result = this.addApiBaseUrlToImages(result, apiBaseUrl);
+            // result = this.addApiBaseUrlToImages(result, apiBaseUrl);
             console.log(result);
 
             this.setState({ data: result, loading: false, error: null });

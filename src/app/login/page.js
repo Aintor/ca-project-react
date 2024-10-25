@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import RequestManager from '@/app/components/RequestManager';
 import Login from '@/app/components/Login';
@@ -18,6 +18,17 @@ const App = () => {
     const [message, setMessage] = useState(null);   // Tracks success message
     const [loginParams, setLoginParams] = useState(null);  // Tracks login params for RequestManager
     const { login, isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        if (message) {
+            login();
+            if (redirect) {
+                router.push(redirect);
+            } else {
+                router.push('/');
+            }
+        }
+    }, [message, redirect]);
 
     // Handler for form submission
     const handleLoginSubmit = (email, password) => {
@@ -42,14 +53,6 @@ const App = () => {
     }
     if (error) {
         content = (<ErrorComponent error={error} />);
-    }
-    if (message) {
-        login();
-        if (redirect) {
-            router.push(redirect);
-        } else {
-            router.push('/');
-        }
     }
 
     return (

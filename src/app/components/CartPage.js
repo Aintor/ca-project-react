@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import CartCard from './CartCard';
 import RequestManager from './RequestManager';
-import { useAuth } from '@/app/layout';
 import ErrorComponent from './ErrorComponent';
 import debounce from 'lodash/debounce';
 
@@ -14,7 +13,6 @@ const CartPage = () => {
     const [updateError, setUpdateError] = useState(null);
     const [errorAnimateIn, setErrorAnimateIn] = useState(false);
     const [requestConfig, setRequestConfig] = useState(null);
-    const { isAuthenticated } = useAuth();
 
     const fetchCart = useCallback(() => {
         setRequestConfig({
@@ -96,11 +94,8 @@ const CartPage = () => {
     };
 
     const handleCheckout = () => {
-        if (isAuthenticated) {
-            console.log('Proceeding to checkout...');
-        } else {
-            alert('Please log in to proceed with checkout.');
-        }
+        // Checkout logic without login status check
+        console.log('Proceeding to checkout...');
     };
 
     if (initialError) {
@@ -108,16 +103,15 @@ const CartPage = () => {
     }
 
     return (
-        <main className="flex min-h-full p-8 gap-x-8 bg-gray-100 dark:bg-gray-900">
-            <section className="w-full lg:w-3/5 h-screen flex flex-col gap-y-4 overflow-auto relative">
-                <div>
+        <main className="flex min-h-screen p-8 gap-x-8 bg-gray-100 dark:bg-gray-900">
+            <section className="w-full lg:w-3/5 flex flex-col gap-y-4 overflow-auto relative min-h-screen overflow-visible">
                 {initialLoading ? (
                     <p>Loading cart items...</p>
                 ) : items.length > 0 ? (
                     items.map((item) => (
                         <CartCard
                             key={item.id}
-                            image={item.image}
+                            image={item.product.image}
                             name={item.price}
                             quantity={item.quantity}
                             onQuantityChange={handleQuantityChange}
@@ -130,25 +124,6 @@ const CartPage = () => {
                     <p className="text-center text-gray-600 dark:text-gray-300">Your cart is empty.</p>
                 )}
                 {updateLoading && <p>Updating cart...</p>}
-
-                <div
-                    className={`absolute bottom-4 right-4 w-64 bg-red-500/60 text-gray-800 dark:text-white rounded-md shadow-lg p-4 transition-transform duration-500 transform ${
-                        errorAnimateIn ? 'translate-x-0' : 'translate-x-[150%]'
-                    }`}
-                >
-                    <p className="text-sm">{updateError}</p>
-                </div>
-
-                {requestConfig && (
-                    <RequestManager
-                        endpoint={requestConfig.endpoint}
-                        method={requestConfig.method}
-                        options={requestConfig.options}
-                        onSuccess={requestConfig.onSuccess}
-                        onError={requestConfig.onError}
-                        onLoading={requestConfig.onLoading}
-                    />
-                )}
             </section>
 
             <aside className="w-full lg:w-2/5 h-full p-10 bg-gray-100 dark:bg-gray-800 rounded-3xl box-border shadow-lg dark:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] sticky top-20">
@@ -166,6 +141,26 @@ const CartPage = () => {
                     Proceed to Checkout
                 </button>
             </aside>
+
+            {/* Error message in floating right-bottom corner */}
+            <div
+                className={`fixed bottom-20 right-4 w-64 bg-red-500/60 text-gray-800 dark:text-white rounded-md shadow-lg p-4 transition-transform duration-500 transform ${
+                    errorAnimateIn ? 'translate-x-0' : 'translate-x-[150%]'
+                }`}
+            >
+                <p className="text-sm">{updateError}</p>
+            </div>
+
+            {requestConfig && (
+                <RequestManager
+                    endpoint={requestConfig.endpoint}
+                    method={requestConfig.method}
+                    options={requestConfig.options}
+                    onSuccess={requestConfig.onSuccess}
+                    onError={requestConfig.onError}
+                    onLoading={requestConfig.onLoading}
+                />
+            )}
         </main>
     );
 };
