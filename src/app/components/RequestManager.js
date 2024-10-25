@@ -98,23 +98,25 @@ class RequestManager extends Component {
                     response = await axios.patch(apiBaseUrl + endpoint, { timeout: 10000, withCredentials: true, ...options });
                     break;
                 case 'DELETE':
-                    response = await axios.delete(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
+                    response = await axios.delete(apiBaseUrl + endpoint, { timeout: 10000, withCredentials: true, ...options });
                     break;
                 default:
                     throw new Error(`Unsupported request method: ${method}`);
             }
 
             let result = response.data;
+            console.log(result);
             if (!((result && typeof result.success === 'undefined') || (result && result.success))) {
                 throw new Error('Failed to fetch data from the server.');
             }
 
             // Process the data to add base URL to image fields
-            // result = this.addApiBaseUrlToImages(result, apiBaseUrl);
+            result = this.addApiBaseUrlToImages(result, apiBaseUrl);
 
             this.setState({ data: result, loading: false, error: null });
 
             if (onSuccess) {
+                console.log(result);
                 onSuccess(result);
             }
         } catch (error) {

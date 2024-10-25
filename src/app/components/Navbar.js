@@ -17,14 +17,14 @@ const Navbar = () => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             if (keyword.trim()) {
-                router.push(`?search=${encodeURIComponent(keyword)}`);
+                router.push(`/?search=${encodeURIComponent(keyword)}`, { forceOptimisticNavigation: true });
             }
         }
     };
 
     const handleQuickSearch = (searchTerm) => {
         setKeyword(searchTerm);
-        router.push(`?search=${encodeURIComponent(searchTerm)}`);
+        router.push(`/?search=${encodeURIComponent(searchTerm)}`, { forceOptimisticNavigation: true });
     };
 
     const handleClick = (categoryId) => {

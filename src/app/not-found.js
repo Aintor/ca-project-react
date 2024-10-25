@@ -9,7 +9,7 @@ export default function NotFound() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            router.push('/');
+            router.push('/',{ forceOptimisticNavigation: true });
         }, 5000);
 
         // Clear the timer when the component unmounts

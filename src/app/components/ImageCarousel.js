@@ -17,7 +17,7 @@ const ImageCarousel = ({ image }) => {
     };
 
     return (
-        <div className="relative w-full max-w-xl mx-auto overflow-hidden rounded-3xl bg-black">
+        <div className="relative w-full max-w-xl mx-auto overflow-hidden rounded-3xl bg-white">
             {/* Image container with square aspect ratio and outer round corners */}
             <div className="relative w-full overflow-hidden rounded-3xl">
                 {/* Image sliding area without round corners */}

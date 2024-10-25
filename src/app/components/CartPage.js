@@ -96,6 +96,9 @@ const CartPage = () => {
     };
 
     const handleCheckout = () => {
+        if (!initialLoading && items.length === 0) {
+            return;
+        }
         // Checkout logic without login status check
         router.push('/checkout');
     };
@@ -125,12 +128,13 @@ const CartPage = () => {
                         />
                     ))
                 ) : (
-                    <p className="text-center text-gray-600 dark:text-gray-300">Your cart is empty.</p>
-                )}
-                {updateLoading && <p>Updating cart...</p>}
+                    <p className="text-center text-gray-600 dark:text-gray-300 font-bold text-xl">
+                        Your cart is empty.
+                    </p>)}
             </section>
 
-            <aside className="w-full lg:w-2/5 h-full p-10 bg-gray-100 dark:bg-gray-800 rounded-3xl box-border shadow-lg dark:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] sticky top-20">
+            <aside
+                className="w-full lg:w-2/5 h-full p-10 bg-gray-100 dark:bg-gray-800 rounded-3xl box-border shadow-lg dark:shadow-[0_0_20px_5px_rgba(0,0,0,0.5)] sticky top-20">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-200 mb-8">Order Summary</h2>
 
                 <div className="flex justify-between mb-4">

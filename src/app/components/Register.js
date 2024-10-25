@@ -28,10 +28,9 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [triggerRequest, setTriggerRequest] = useState(false);
-    const { login, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const redirect = searchParams.get('redirect');
     const emailRegex = /\S+@\S+\.\S+/;
     // Form validation state
     const [isFormValid, setIsFormValid] = useState(false);
@@ -104,11 +103,10 @@ const Register = () => {
     };
 
     const handleSuccess = () => {
-        login();
         if (redirect) {
-            router.push(redirect);
+            router.push(redirect, { forceOptimisticNavigation: true });
         } else {
-            router.push('/account');
+            router.push('/login' + redirect ? '?redirect='+redirect : '');
         }
     };
 

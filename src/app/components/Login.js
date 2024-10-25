@@ -6,7 +6,7 @@ const validateEmail = (value) => {
     return value.includes('@');
 };
 
-const Login = ({ onSubmit }) => {
+const Login = ({ onSubmit, redirect=null }) => {
     const [email, setEmail] = useState('');  // Email input state
     const [password, setPassword] = useState('');  // Password input state
     const [showPassword, setShowPassword] = useState(false);  // Toggles password visibility
@@ -178,7 +178,7 @@ const Login = ({ onSubmit }) => {
                             <button
                                 type="button"
                                 className="ml-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-                                onClick={() => router.push('/register')}
+                                onClick={() => router.push('/register' + redirect ? '?redirect='+redirect : '')}
                             >
                                 Create account
                             </button>

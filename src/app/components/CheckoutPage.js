@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Assuming Next.js
-import LoadingComponent from './LoadingComponent'; // Assuming you have a loading component
+import { useRouter } from 'next/navigation';
+import LoadingComponent from './LoadingComponent';
 
 const CheckoutComponent = () => {
     const router = useRouter();
-
     const [addresses, setAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [creditCardDetails, setCreditCardDetails] = useState({

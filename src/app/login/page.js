@@ -20,6 +20,16 @@ const App = () => {
     const { login, isAuthenticated } = useAuth();
 
     useEffect(() => {
+        if (isAuthenticated) {
+            if (redirect) {
+                router.push(redirect);
+            } else {
+                router.push('/');
+            }
+        }
+    }, [isAuthenticated, redirect, router]);
+
+    useEffect(() => {
         if (message) {
             login();
             if (redirect) {
@@ -37,15 +47,12 @@ const App = () => {
         setLoginParams({ email, password });  // Set login params to trigger RequestManager
     };
 
-    // If authenticated, redirect to account page
-    if (isAuthenticated) {
-        router.push('/account');
-    }
 
     // Manage the content to be displayed based on loading, error, and message state
     let content = (
         <Login
             onSubmit={handleLoginSubmit}  // Inject submit handler
+            redirect={redirect}
         />
     );
     if (loading) {

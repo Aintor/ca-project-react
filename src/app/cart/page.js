@@ -13,12 +13,12 @@ function App() {
     useEffect(() => {
         if (!isAuthenticated) {
             const timer = setTimeout(() => {
-                router.push('/login?redirect=/cart');
+                router.push('/login?redirect=/cart', { forceOptimisticNavigation: true });
             }, 5000);
 
             return () => clearTimeout(timer);
         }
-    }, [isAuthenticated, router]);
+    }, [isAuthenticated]);
 
     if (!isAuthenticated) {
         return (

@@ -56,7 +56,7 @@ const App = () => {
         } else {
             router.push('/not-found');
         }
-    }, [categoryId, keyword, router, searchParamsString]);
+    }, [categoryId, keyword]);
 
     const getTitle = useCallback(() => {
         if (!keyword) {
@@ -105,7 +105,7 @@ const App = () => {
                         endpoint={endpoint}
                         method={method}
                         onSuccess={(result) => {
-                            setProducts(result);
+                            setProducts((keyword && !categoryId) ? [result] : result);
                             setLoading(false);  // Cancel loading state after request is complete
                         }}
                         onError={(errorMessage) => {
