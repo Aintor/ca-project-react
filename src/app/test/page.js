@@ -14,7 +14,7 @@ function App() {
         <div>
             <Navbar/>
             <div style={{marginTop: '4rem'}}>
-                <Login/>
+                <Register/>
             </div>
         </div>
     );

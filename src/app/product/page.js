@@ -1,4 +1,7 @@
 "use client";
+{/*
+Author: Wang Jiaxuan
+*/}
 import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../components/Navbar';

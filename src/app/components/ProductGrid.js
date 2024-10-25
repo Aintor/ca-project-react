@@ -11,7 +11,7 @@ const ProductGrid = ({ products }) => {
             {products.map((product, index) => (
                 <ProductCard
                     key={index}
-                    image={product.image}
+                    image={product.image[0]}
                     feature={product.feature}
                     name={product.name}
                     price={product.price}

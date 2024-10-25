@@ -16,7 +16,7 @@ const App = () => {
     const [loading, setLoading] = useState(false);  // Tracks the loading state
     const [error, setError] = useState(null);       // Tracks any error that occurs
     const [message, setMessage] = useState(null);   // Tracks success message
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
 
     // Handler for form submission
     const handleLoginSubmit = (email, password) => {
@@ -30,7 +30,7 @@ const App = () => {
                 method="POST"
                 options={{
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // Set the correct Content-Type
-                    data: new URLSearchParams({ username: email, password: password }) // Encode form data
+                    data: new URLSearchParams({ email: email, password: password }) // Encode form data
                 }}
                 onSuccess={(result) => {
                     setMessage(result.message);  // Handle success message
@@ -44,6 +44,10 @@ const App = () => {
             />
         );
     };
+
+    if (isAuthenticated) {
+        router.push('/account');
+    }
 
     let content = (
         <Login

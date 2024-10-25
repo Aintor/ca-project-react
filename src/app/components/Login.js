@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const validateEmail = (value) => {
     // A simple regular expression for email validation
@@ -12,6 +13,7 @@ const Login = ({ onSubmit }) => {
     const [showPassword, setShowPassword] = useState(false);  // Toggles password visibility
     const [emailError, setEmailError] = useState(false);  // Tracks if email is valid or not
     const [emailTouched, setEmailTouched] = useState(false);  // Tracks if email input has been focused
+    const router = useRouter();
 
     // Handle form submission
     const handleSubmit = (e) => {
@@ -170,6 +172,17 @@ const Login = ({ onSubmit }) => {
                         >
                             Sign In
                         </button>
+                        {/* Create Account Section */}
+                        <div className="flex justify-center text-sm dark:text-gray-300">
+                            <p>Don&#39;t have an account?</p>
+                            <button
+                                type="button"
+                                className="ml-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                                onClick={() => router.push('/register')}
+                            >
+                                Create account
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
