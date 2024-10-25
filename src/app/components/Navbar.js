@@ -4,7 +4,6 @@ Note: For this component, I refer to the one on Apple's website.
       You can see the prototype at: https://www.apple.com
 */
 }
-// Search function not implemented
 // Should use <div style={{marginTop: '4rem'}}> enclose the content to render the Navbar correctly.
 import {useRouter} from "next/navigation";
 import React, {useState, useEffect, useRef} from 'react';
@@ -13,6 +12,20 @@ const Navbar = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false); // Control the search box's open state
     const inputRef = useRef(null);
     const router = useRouter();
+    const [keyword, setKeyword] = useState('');
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            if (keyword.trim()) {
+                router.push(`?search=${encodeURIComponent(keyword)}`);
+            }
+        }
+    };
+
+    const handleQuickSearch = (searchTerm) => {
+        setKeyword(searchTerm);
+        router.push(`?search=${encodeURIComponent(searchTerm)}`);
+    };
 
     const handleClick = (categoryId) => {
         const url = categoryId === 0 ? '/' : `/?categoryId=${categoryId}`;
@@ -82,7 +95,7 @@ const Navbar = () => {
                             ].map((item, index) => (
                                 <a
                                     key={item}
-                                    onClick={() => handleClick(index+1)}
+                                    onClick={() => handleClick(index + 1)}
                                     className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200/50 hover:text-black dark:hover:bg-gray-700/50 dark:hover:text-white transition-colors duration-200"
                                 >
                                     {item}
@@ -170,9 +183,13 @@ const Navbar = () => {
                     <input
                         ref={inputRef}
                         type="text"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)} // 实时更新 keyword 状态
+                        onKeyDown={handleKeyDown}
                         placeholder="Search"
                         className="w-full bg-transparent border-b border-gray-300 dark:border-gray-600 text-black dark:text-white focus:outline-none py-2"
                     />
+
                     <div className="text-sm mt-4">
                         <ul>
                             {[
@@ -183,13 +200,13 @@ const Navbar = () => {
                                 'Healthy Meal Kits',
                             ].map((item, index) => (
                                 <li key={index} className="mb-2">
-                                    <a
-                                        href="#"
-                                        className="flex items-center space-x-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    <button
+                                        onClick={() => handleQuickSearch(item)}
+                                        className="flex items-center space-x-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                                     >
                                         <span className="text-gray-500 dark:text-gray-400">→</span>
                                         <span className="text-black dark:text-white">{item}</span>
-                                    </a>
+                                    </button>
                                 </li>
                             ))}
                         </ul>

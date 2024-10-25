@@ -15,6 +15,7 @@ const App = () => {
     // 从 searchParams 获取参数
     const categoryId = searchParams.get('categoryId');
     const keyword = searchParams.get('search');
+    console.log(keyword);
 
     const [endpoint, setEndpoint] = React.useState('');
     const [method, setMethod] = React.useState('GET');

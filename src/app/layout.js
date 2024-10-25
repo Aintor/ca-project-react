@@ -2,8 +2,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import React, { createContext, useState, useContext, useEffect } from "react";
-import Navbar from "@/app/components/Navbar";
-import LoadingComponent from "@/app/components/LoadingComponent";
+import { metadata } from './metadata';
+import Head from 'next/head';
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -66,6 +66,10 @@ export const useAuth = () => {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
+        <Head>
+            <title>{metadata.title}</title>
+            <meta name="description" content={metadata.description}/>
+        </Head>
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >

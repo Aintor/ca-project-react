@@ -4,8 +4,9 @@ import LoadingComponent from './LoadingComponent';
 import SquareImageDisplay from "@/app/components/SquareImageDisplay";
 import QuantitySelector from "@/app/components/QuantitySelector";
 
-const CartCard = ({ image, feature, name, price, id, quantity, onQuantityChange, onDelete, disabled }) => {
+const CartCard = ({ image='', feature='None', name='Product', price=100, id=null, quantity=1, onQuantityChange, onDelete, disabled }) => {
     const router = useRouter();
+    console.log(image, feature, name, price, id, quantity)
     const [isImageVisible, setIsImageVisible] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const cardRef = useRef(null);
@@ -122,7 +123,7 @@ const CartCard = ({ image, feature, name, price, id, quantity, onQuantityChange,
                 {/* Delete Text Button in Bottom Right */}
                 <button
                     onClick={handleDelete}
-                    className="absolute bottom-4 right-4 text-red-200 hover:text-red-600 transition"
+                    className="absolute bottom-4 right-4 text-red-200 dark:text-red-400 hover:dark:text-red-500 hover:text-red-600 transition"
                     disabled={disabled}
                 >
                     Delete

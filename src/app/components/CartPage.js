@@ -44,7 +44,7 @@ const CartPage = () => {
     }, [fetchCart]);
 
     useEffect(() => {
-        const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
         setTotalPrice(total);
     }, [items]);
 
@@ -111,12 +111,14 @@ const CartPage = () => {
                     items.map((item) => (
                         <CartCard
                             key={item.id}
-                            image={item.product.image}
-                            name={item.price}
+                            image={item.product.image[0]}
+                            feature={item.product.feature}
+                            name={item.product.name}
+                            price={item.product.price}
                             quantity={item.quantity}
                             onQuantityChange={handleQuantityChange}
                             onDelete={handleDelete}
-                            id={item.id}
+                            id={item.product.id}
                             disabled={updateLoading} // Disable actions during update
                         />
                     ))
@@ -135,7 +137,7 @@ const CartPage = () => {
                 </div>
 
                 <button
-                    className="mt-8 w-full h-14 font-semibold rounded-md bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-transform transform hover:scale-105"
+                    className={`h-14 w-1/2 font-semibold rounded-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700`}
                     onClick={handleCheckout}
                 >
                     Proceed to Checkout
