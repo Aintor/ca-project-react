@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation';
 
 const validateEmail = (value) => {
     // A simple regular expression for email validation
-    const emailRegex = /\S+@\S+\.\S+/;
-    return emailRegex.test(value);
+    return value.includes('@');
 };
 
 const Login = ({ onSubmit }) => {
@@ -21,6 +20,7 @@ const Login = ({ onSubmit }) => {
 
         // Validate email format before submitting
         if (!validateEmail(email)) {
+            console.log("Invalid email");
             setEmailError(true);  // If email is invalid, set error and stop submission
             return;
         }
@@ -94,7 +94,7 @@ const Login = ({ onSubmit }) => {
                             Email
                         </label>
                         <input
-                            type="email"
+                            type="text"
                             id="email"
                             placeholder="you@email.com"
                             className={`w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 border ${
