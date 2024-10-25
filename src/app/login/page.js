@@ -61,7 +61,7 @@ const App = () => {
                 {/* Conditionally render the RequestManager only when loginParams is set */}
                 {loginParams && (
                     <RequestManager
-                        endpoint={`/api/login/?email=${loginParams.email}&password=${loginParams.password}`}
+                        endpoint={`/api/login?email=${loginParams.email}&password=${loginParams.password}`}
                         method="POST"
                         onSuccess={(result) => {
                             setMessage(result.message);  // Handle success message
