@@ -178,7 +178,7 @@ const Login = ({ onSubmit, redirect=null }) => {
                             <button
                                 type="button"
                                 className="ml-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-                                onClick={() => router.push('/register' + redirect ? '?redirect='+redirect : '')}
+                                onClick={() => router.push('/register' + (redirect ? '?redirect='+redirect : ''))}
                             >
                                 Create account
                             </button>

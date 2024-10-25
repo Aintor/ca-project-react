@@ -4,7 +4,7 @@ Author: Wang Jiaxuan
 import React, { useState, useEffect } from 'react';
 import RequestManager from './RequestManager';
 import { useAuth } from '../layout';
-import { useSearchParams, useRouter } from 'next/navigation';
+import {useSearchParams, useRouter, redirect} from 'next/navigation';
 import ErrorComponent from "@/app/components/ErrorComponent";
 
 // Define the Checkmark Icon as a reusable component
@@ -103,10 +103,12 @@ const Register = () => {
     };
 
     const handleSuccess = () => {
-        if (redirect) {
+        // Ensure 'redirect' is a string or at least defined
+        if (typeof redirect === 'string' && redirect.trim() !== '') {
             router.push(redirect, { forceOptimisticNavigation: true });
         } else {
-            router.push('/login' + redirect ? '?redirect='+redirect : '');
+            // Fix the logical condition by wrapping in parentheses
+            router.push('/login' + (redirect ? '?redirect=' + redirect : ''));
         }
     };
 

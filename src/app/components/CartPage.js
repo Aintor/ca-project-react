@@ -111,7 +111,7 @@ const CartPage = () => {
         <main className="flex min-h-screen p-8 gap-x-8 bg-gray-100 dark:bg-gray-900">
             <section className="w-full lg:w-3/5 flex flex-col gap-y-4 overflow-auto relative min-h-screen overflow-visible">
                 {initialLoading ? (
-                    <p>Loading cart items...</p>
+                    ''
                 ) : items.length > 0 ? (
                     items.map((item) => (
                         <CartCard

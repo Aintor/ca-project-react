@@ -3,7 +3,7 @@ Author: Wang Jiaxuan
 */}
 import React from 'react';
 
-const ErrorComponent = ({ message, straight=false }) => {
+const ErrorComponent = ({ message, straight=true }) => {
     return (
         <div
             className="flex flex-col justify-center items-center h-screen bg-white dark:bg-black text-black dark:text-white">
