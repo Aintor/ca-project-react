@@ -13,7 +13,7 @@ function App() {
     useEffect(() => {
         if (!isAuthenticated) {
             const timer = setTimeout(() => {
-                router.push('/login');
+                router.push('/login?redirect=/cart');
             }, 5000);
 
             return () => clearTimeout(timer);
@@ -22,9 +22,13 @@ function App() {
 
     if (!isAuthenticated) {
         return (
-            <div>
-                <ErrorComponent message={"You have not login. Redirecting to login page in 5 seconds..."} straight={true} />
+        <div>
+            <Navbar/>
+            <div style={{marginTop: '4rem'}}>
+                <ErrorComponent message={"You have not login. Redirecting to login page in 5 seconds..."}
+                                straight={true}/>
             </div>
+        </div>
         );
     }
 

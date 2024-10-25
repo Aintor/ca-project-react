@@ -8,13 +8,14 @@ import ProductCard from "@/app/components/ProductCard"
 import Login from "@/app/components/Login"
 import Register from "@/app/components/Register";
 import CartPage from "@/app/components/CartPage";
+import CheckoutPage from "@/app/components/CheckoutPage";
 
 function App() {
     return (
         <div>
             <Navbar/>
             <div style={{marginTop: '4rem'}}>
-               <CartPage/>
+               <CheckoutPage/>
             </div>
         </div>
     );
