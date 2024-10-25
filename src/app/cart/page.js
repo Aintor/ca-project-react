@@ -9,21 +9,23 @@ import ErrorComponent from "@/app/components/ErrorComponent";
 function App() {
     const { isAuthenticated } = useAuth();
     const router = useRouter();
+
     useEffect(() => {
         if (!isAuthenticated) {
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 router.push('/login');
             }, 5000);
-            return (
-                <div>
-                    <ErrorComponent message={"You have not login. Redirecting to login page in 5 seconds..."} straight={true} />
-                </div>
-            )
+
+            return () => clearTimeout(timer);
         }
     }, [isAuthenticated, router]);
 
     if (!isAuthenticated) {
-        return null;
+        return (
+            <div>
+                <ErrorComponent message={"You have not login. Redirecting to login page in 5 seconds..."} straight={true} />
+            </div>
+        );
     }
 
     return (
