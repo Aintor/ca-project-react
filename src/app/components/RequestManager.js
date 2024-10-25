@@ -90,6 +90,9 @@ class RequestManager extends Component {
                 case 'POST':
                     response = await axios.post(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
                     break;
+                case 'PUT':
+                    response = await axios.put(apiBaseUrl + endpoint, options.data, { timeout: 10000, withCredentials: true, ...options });
+                    break;
                 case 'PATCH':
                     response = await axios.patch(apiBaseUrl + endpoint, { timeout: 10000, withCredentials: true, ...options });
                     break;
@@ -115,6 +118,7 @@ class RequestManager extends Component {
                 onSuccess(result);
             }
         } catch (error) {
+            console.log(error);
             let errorMessage = 'An unexpected error occurred.';
             if (error.code === 'ECONNABORTED') {
                 errorMessage = 'The request timed out.';

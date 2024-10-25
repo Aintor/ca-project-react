@@ -139,7 +139,7 @@ const CartPage = () => {
                 </div>
 
                 <button
-                    className={`h-14 w-1/2 font-semibold rounded-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700`}
+                    className={`h-14 w-full font-semibold rounded-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700`}
                     onClick={handleCheckout}
                 >
                     Proceed to Checkout

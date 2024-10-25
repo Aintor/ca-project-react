@@ -6,7 +6,6 @@ import QuantitySelector from "@/app/components/QuantitySelector";
 
 const CartCard = ({ image='', feature='None', name='Product', price=100, id=null, quantity=1, onQuantityChange, onDelete, disabled }) => {
     const router = useRouter();
-    console.log(image, feature, name, price, id, quantity)
     const [isImageVisible, setIsImageVisible] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const cardRef = useRef(null);
