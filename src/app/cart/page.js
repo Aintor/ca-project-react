@@ -4,15 +4,14 @@ import Navbar from "@/app/components/Navbar";
 import CartPage from "@/app/components/CartPage";
 import { useAuth } from '../layout';
 import { useRouter } from "next/navigation";
-import {setTimeout} from "next/dist/compiled/@edge-runtime/primitives";
 import ErrorComponent from "@/app/components/ErrorComponent";
 
 function App() {
-    const {isAuthenticated} = useAuth();
+    const { isAuthenticated } = useAuth();
     const router = useRouter();
     useEffect(() => {
         if (!isAuthenticated) {
-            const timer = setTimeout(() => {
+            setTimeout(() => {
                 router.push('/login');
             }, 5000);
             return (
@@ -21,10 +20,10 @@ function App() {
                 </div>
             )
         }
-    }, [isAuthenticated, router]); // 依赖 isAuthenticated 和 router
+    }, [isAuthenticated, router]);
 
     if (!isAuthenticated) {
-        return null; // 返回 null 以避免组件渲染
+        return null;
     }
 
     return (

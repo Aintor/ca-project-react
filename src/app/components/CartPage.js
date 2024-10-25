@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import CartCard from './CartCard';
+import { useRouter } from 'next/navigation';
 import RequestManager from './RequestManager';
 import ErrorComponent from './ErrorComponent';
 import debounce from 'lodash/debounce';
@@ -13,6 +14,7 @@ const CartPage = () => {
     const [updateError, setUpdateError] = useState(null);
     const [errorAnimateIn, setErrorAnimateIn] = useState(false);
     const [requestConfig, setRequestConfig] = useState(null);
+    const router = useRouter();
 
     const fetchCart = useCallback(() => {
         setRequestConfig({
@@ -95,7 +97,7 @@ const CartPage = () => {
 
     const handleCheckout = () => {
         // Checkout logic without login status check
-        console.log('Proceeding to checkout...');
+        router.push('/checkout');
     };
 
     if (initialError) {
