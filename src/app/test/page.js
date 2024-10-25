@@ -10,7 +10,6 @@ import Register from "@/app/components/Register";
 import CartPage from "@/app/components/CartPage";
 
 function App() {
-    const error = "Timeout";
     return (
         <div>
             <Navbar/>

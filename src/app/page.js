@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import ProductGrid from '@/app/components/ProductGrid';
@@ -10,12 +10,11 @@ import RequestManager from "@/app/components/RequestManager";
 const App = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const pathname = usePathname(); // 使用 usePathname 获取当前路径
+    const pathname = usePathname(); // Using usePathname to get the current path
 
-    // 从 searchParams 获取参数
+    // Get parameters from searchParams
     const categoryId = searchParams.get('categoryId');
     const keyword = searchParams.get('search');
-    console.log(keyword);
 
     const [endpoint, setEndpoint] = React.useState('');
     const [method, setMethod] = React.useState('GET');
@@ -23,20 +22,20 @@ const App = () => {
     const [error, setError] = React.useState('');
     const [products, setProducts] = React.useState([]);
 
-    // 提取 searchParams.toString() 到一个变量中
+    // Extract searchParams.toString() into a variable
     const searchParamsString = searchParams.toString();
 
-    // 清除之前的状态变量
+    // Clear previous state variables
     useEffect(() => {
-        // 每次路径变化时清除之前的状态
+        // Clear previous states on every path change
         setProducts([]);
         setError('');
         setLoading(true);
-    }, [pathname, searchParamsString]);  // 依赖 pathname，每次路径变化时触发
+    }, [pathname, searchParamsString]);  // Dependencies on pathname, trigger on every path change
 
-    // 使用 searchParamsString 作为依赖
+    // Use searchParamsString as a dependency
     useEffect(() => {
-        // 检查是否同时存在 categoryId 和 keyword
+        // Check if both categoryId and keyword exist
         if (categoryId && keyword) {
             setTimeout(() => {
                 router.push('/');
@@ -44,18 +43,17 @@ const App = () => {
             return;
         }
 
-        // 根据参数设置 endpoint 和 method
+        // Set endpoint and method based on the parameters
         if (keyword) {
             setEndpoint('/products/name/' + keyword);
             setMethod('GET');
-        } else if (categoryId===null) {
+        } else if (categoryId === null) {
             setEndpoint('/products');
             setMethod('POST');
         } else if (Number.isInteger(Number(categoryId)) && Number(categoryId) >= 1 && Number(categoryId) <= 5) {
             setEndpoint(`/products/category/${categoryId}`);
             setMethod('GET');
-        }
-        else {
+        } else {
             router.push('/not-found');
         }
     }, [categoryId, keyword, router, searchParamsString]);
@@ -99,7 +97,7 @@ const App = () => {
     }, [categoryId]);
 
     return (
-        <div key={searchParamsString}> {/* 使用 searchParamsString 作为 key */}
+        <div key={searchParamsString}> {/* Use searchParamsString as a key */}
             <Navbar />
             <div style={{ marginTop: '4rem' }}>
                 {endpoint && (
@@ -108,11 +106,11 @@ const App = () => {
                         method={method}
                         onSuccess={(result) => {
                             setProducts(result);
-                            setLoading(false);  // 请求完成后取消 loading 状态
+                            setLoading(false);  // Cancel loading state after request is complete
                         }}
                         onError={(errorMessage) => {
                             setError(errorMessage);
-                            setLoading(false);  // 请求失败后取消 loading 状态
+                            setLoading(false);  // Cancel loading state after request fails
                         }}
                         onLoading={(isLoading) => {
                             setLoading(isLoading);
