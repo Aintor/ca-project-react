@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useCallback } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import React, {useEffect, useCallback, useState} from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ProductGrid from '@/app/components/ProductGrid';
 import Navbar from "@/app/components/Navbar";
 import ErrorComponent from "@/app/components/ErrorComponent";
@@ -10,12 +10,10 @@ import RequestManager from "@/app/components/RequestManager";
 const App = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const pathname = usePathname(); // Using usePathname to get the current path
-
     // Get parameters from searchParams
-    const categoryId = searchParams.get('categoryId');
-    const keyword = searchParams.get('search');
 
+    const [categoryId, setCategoryId] = useState(searchParams.get('categoryId'));
+    const [keyword, setKeyword] = useState(searchParams.get('search'));
     const [endpoint, setEndpoint] = React.useState('');
     const [refreshKey, setRefreshKey] = React.useState(false);
     const [method, setMethod] = React.useState('GET');
@@ -23,14 +21,14 @@ const App = () => {
     const [error, setError] = React.useState('');
     const [products, setProducts] = React.useState([]);
 
-    // Clear previous state variables
     useEffect(() => {
-        // Clear previous states on every path change
+        setCategoryId(searchParams.get('categoryId'));
+        setKeyword(searchParams.get('search'));
+        setEndpoint(null);
         setRefreshKey(!refreshKey);
-        setProducts([]);
         setError('');
         setLoading(false);
-    }, [pathname]);  // Dependencies on pathname, trigger on every path change
+    }, [searchParams]);
 
     // Use searchParamsString as a dependency
     useEffect(() => {

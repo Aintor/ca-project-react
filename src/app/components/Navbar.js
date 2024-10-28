@@ -17,6 +17,7 @@ const Navbar = () => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             if (keyword.trim()) {
+                setIsSearchOpen(false);
                 router.push(`/?search=${encodeURIComponent(keyword)}`, { forceOptimisticNavigation: true });
             }
         }
@@ -24,6 +25,7 @@ const Navbar = () => {
 
     const handleQuickSearch = (searchTerm) => {
         setKeyword(searchTerm);
+        setIsSearchOpen(false);
         router.push(`/?search=${encodeURIComponent(searchTerm)}`, { forceOptimisticNavigation: true });
     };
 
