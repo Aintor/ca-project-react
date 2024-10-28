@@ -12,7 +12,9 @@ const DeleteAddressModal = ({ address, onClose, onDelete }) => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.delete(`${apiBaseUrl}/addresses`, {
+            console.log('delete');
+            console.log(address);
+            const response = await axios.delete(`${apiBaseUrl}/addresses?addressId=${address.id}`, {
                 data: { addressId: address.id },
                 withCredentials: true,
             });

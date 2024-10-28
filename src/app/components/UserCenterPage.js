@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const UserCenterPage = () => {
     const [activeTab, setActiveTab] = useState('AccountDetails');
-    const { isAuthenticated, logout } = useAuth();
+    const { logout, isAuthenticated } = useAuth();
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     // Handle logout
@@ -47,11 +47,6 @@ const UserCenterPage = () => {
                 return <AccountDetails />;
         }
     };
-
-    if (!isAuthenticated) {
-        return <LoadingComponent />;
-    }
-
     return (
         <main className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
             {/* Sidebar */}

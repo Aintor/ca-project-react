@@ -11,7 +11,7 @@ function App() {
         if (!isAuthenticated) {
             router.push("/login");
         }
-    }, []);
+    }, [isAuthenticated]);
     return (
         <div>
             <Navbar/>

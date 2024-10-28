@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const EditAddressModal = ({ address, onClose, onUpdate }) => {
+    console.log(address);
     const [updatedAddress, setUpdatedAddress] = useState({
         street: address.street,
         city: address.city,
         state: address.state,
         country: address.country,
-        zipcode: address.zipcode,
+        zipCode: address.zipCode,
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -25,8 +26,7 @@ const EditAddressModal = ({ address, onClose, onUpdate }) => {
         setLoading(true);
         setError('');
         try {
-            const response = await axios.patch(`${apiBaseUrl}/addresses`, {
-                addressId: address.id,
+            const response = await axios.patch(`${apiBaseUrl}/addresses?addressId=${address.id}`, {
                 ...updatedAddress,
             }, {
                 withCredentials: true,
@@ -58,7 +58,7 @@ const EditAddressModal = ({ address, onClose, onUpdate }) => {
                         type="text"
                         name="street"
                         placeholder="Street"
-                        value={updatedAddress.street}
+                        value={updatedAddress.street ? updatedAddress.street : ''}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -67,7 +67,7 @@ const EditAddressModal = ({ address, onClose, onUpdate }) => {
                         type="text"
                         name="city"
                         placeholder="City"
-                        value={updatedAddress.city}
+                        value={updatedAddress.city ? updatedAddress.city : ''}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -76,7 +76,7 @@ const EditAddressModal = ({ address, onClose, onUpdate }) => {
                         type="text"
                         name="state"
                         placeholder="State/Province"
-                        value={updatedAddress.state}
+                        value={updatedAddress.state ? updatedAddress.state : ''}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -85,16 +85,16 @@ const EditAddressModal = ({ address, onClose, onUpdate }) => {
                         type="text"
                         name="country"
                         placeholder="Country"
-                        value={updatedAddress.country}
+                        value={updatedAddress.country ? updatedAddress.country : ''}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     />
                     <input
                         type="text"
-                        name="zipcode"
+                        name="zipCode"
                         placeholder="ZIP Code"
-                        value={updatedAddress.zipcode}
+                        value={updatedAddress.zipCode ? updatedAddress.zipCode : ''}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"

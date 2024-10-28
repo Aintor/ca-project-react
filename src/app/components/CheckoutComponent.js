@@ -27,6 +27,7 @@ const CheckoutComponent = () => {
     const [cartLoading, setCartLoading] = useState(true); // Loading state for cart data
     const [cartItems, setCartItems] = useState([]); // Cart items state
     const [cartError, setCartError] = useState(false); // Error when no cart items
+    const [addressUpdateState, setAddressUpdateState] = useState(true);
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     // Fetch cart data on component mount
@@ -73,10 +74,11 @@ const CheckoutComponent = () => {
 
     // Fetch addresses on component mount (only if cart has items)
     useEffect(() => {
-        if (cartItems.length > 0) {
+        if (cartItems.length > 0 && addressUpdateState) {
             fetchAddresses();
+            setAddressUpdateState(false);
         }
-    }, [cartItems]);
+    }, [cartItems, addressUpdateState]);
 
     const fetchAddresses = async () => {
         setLoading(true);
@@ -282,43 +284,44 @@ const CheckoutComponent = () => {
     }
 
     return (
-        <div className="flex flex-col lg:flex-row min-h-screen bg-gray-900 p-6 lg:p-8 gap-x-8 relative">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-gray-900 p-6 lg:p-8 gap-x-8 relative">
             {/* Address Selection Section */}
-            <section className="w-full lg:w-2/3 bg-transparent p-4 rounded-2xl shadow-none overflow-y-auto max-h-screen">
-                <h2 className="text-2xl font-bold text-gray-200 mb-4">
+            <section
+                className="w-full lg:w-2/3 bg-transparent p-4 rounded-2xl shadow-none overflow-y-auto max-h-screen">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
                     Select Shipping Address
                 </h2>
                 {errorMessage && (
-                    <div className="mb-4 text-red-500 font-semibold">
+                    <div className="mb-4 text-red-500 dark:text-red-400 font-semibold">
                         {errorMessage}
                     </div>
                 )}
                 {addresses.length === 0 ? (
                     <div
-                        className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-600 rounded-2xl cursor-pointer hover:bg-gray-700 transition duration-300 backdrop-filter backdrop-blur-md bg-white bg-opacity-10"
+                        className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-600 dark:border-gray-500 rounded-2xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300 backdrop-filter backdrop-blur-md bg-gray-50 dark:bg-gray-800"
                         onClick={() => setIsModalOpen(true)}
                     >
-                        <span className="text-gray-400 text-4xl">+</span>
+                        <span className="text-gray-400 dark:text-gray-300 text-4xl">+</span>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                         {/* Add New Address Button at the Top */}
                         <div
-                            className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 rounded-2xl cursor-pointer hover:bg-gray-700 transition duration-300 backdrop-filter backdrop-blur-md bg-white bg-opacity-10"
+                            className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 dark:border-gray-500 rounded-2xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300 backdrop-filter backdrop-blur-md bg-gray-50 dark:bg-gray-800"
                             onClick={() => setIsModalOpen(true)}
                         >
-                            <span className="text-gray-400 text-3xl">+</span>
+                            <span className="text-gray-400 dark:text-gray-300 text-3xl">+</span>
                         </div>
 
                         {/* Existing Addresses */}
                         {addresses.map((address) => (
                             <div
                                 key={address.id}
-                                className={`relative p-4 rounded-2xl border ${
+                                className={`relative p-4 rounded-2xl border min-h-[100px] ${
                                     selectedAddressId === address.id
-                                        ? 'border-blue-500 bg-gray-700'
-                                        : 'border-gray-600 bg-gray-800'
-                                } cursor-pointer transition-transform duration-300 hover:scale-105 hover:bg-gray-700`}
+                                        ? 'border-blue-500 bg-gray-100 dark:bg-gray-700'
+                                        : 'border-gray-600 dark:border-gray-500 bg-gray-50 dark:bg-gray-800'
+                                } cursor-pointer transition-transform duration-300 hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700`}
                                 onClick={() => handleAddressSelect(address.id)}
                             >
                                 {/* Delete Button */}
@@ -328,13 +331,13 @@ const CheckoutComponent = () => {
                                         handleDeleteAddress(address.id);
                                     }}
                                     className="
-                                        absolute top-2 right-2
-                                        text-gray-400 dark:text-gray-500
-                                        hover:text-red-500
-                                        transition-transform duration-300
-                                        transform hover:rotate-90
-                                        focus:outline-none
-                                    "
+                                                absolute top-2 right-2
+                                                text-gray-400 dark:text-gray-500
+                                                hover:text-red-500 dark:hover:text-red-400
+                                                transition-transform duration-300
+                                                transform hover:rotate-90
+                                                focus:outline-none
+                                              "
                                     aria-label="Delete Address"
                                 >
                                     <svg
@@ -354,7 +357,7 @@ const CheckoutComponent = () => {
                                 </button>
 
                                 {/* Address Details */}
-                                <p className="text-lg font-semibold text-gray-100">
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                                     {address.street}, {address.city}, {address.state}, {address.country}, {address.zipCode}
                                 </p>
                             </div>
@@ -366,21 +369,21 @@ const CheckoutComponent = () => {
             {/* Payment Method Sidebar */}
             <aside
                 className="
-                    w-full lg:w-1/3 h-full p-10
-                    bg-white bg-opacity-30
-                    backdrop-filter backdrop-blur-lg
-                    rounded-3xl box-border shadow-lg
-                    sticky top-20
-                    dark:bg-gray-800 dark:bg-opacity-50 dark:backdrop-blur-md
-                "
+        w-full lg:w-1/3 h-full p-10
+        bg-gray-200 bg-opacity-30
+        backdrop-filter backdrop-blur-lg
+        rounded-3xl box-border shadow-lg
+        sticky top-20
+        dark:bg-gray-800 dark:bg-opacity-50 dark:backdrop-blur-md
+    "
             >
-                <h2 className="text-2xl font-bold text-gray-200 mb-4">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
                     Payment Method
                 </h2>
                 <div className="space-y-4">
                     {/* Card Holder Name */}
                     <div>
-                        <label className="block text-gray-300 font-semibold mb-2">
+                        <label className="block text-gray-500 dark:text-gray-300 font-semibold mb-2">
                             Card Holder Name
                         </label>
                         <input
@@ -389,17 +392,17 @@ const CheckoutComponent = () => {
                             value={creditCardDetails.cardHolderName}
                             onChange={handleInputChange}
                             className={`w-full p-2 rounded-2xl border ${
-                                validationErrors.cardHolderName ? 'border-red-500' : 'border-gray-600'
-                            } bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                                validationErrors.cardHolderName ? 'border-red-500 dark:border-red-400' : 'border-gray-600 dark:border-gray-500'
+                            } text-gray-500 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400`}
                         />
                         {validationErrors.cardHolderName && (
-                            <p className="text-red-500 text-sm mt-1">{validationErrors.cardHolderName}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-1">{validationErrors.cardHolderName}</p>
                         )}
                     </div>
 
                     {/* Card Number */}
                     <div>
-                        <label className="block text-gray-300 font-semibold mb-2">
+                        <label className="block text-gray-500 dark:text-gray-300 font-semibold mb-2">
                             Card Number
                         </label>
                         <input
@@ -408,13 +411,13 @@ const CheckoutComponent = () => {
                             value={creditCardDetails.cardNumber}
                             onChange={handleInputChange}
                             className={`w-full p-2 rounded-2xl border ${
-                                validationErrors.cardNumber ? 'border-red-500' : 'border-gray-600'
-                            } bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                                validationErrors.cardNumber ? 'border-red-500 dark:border-red-400' : 'border-gray-600 dark:border-gray-500'
+                            } text-gray-500 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400`}
                             placeholder="1234 5678 1234 5678"
                             maxLength="19"
                         />
                         {validationErrors.cardNumber && (
-                            <p className="text-red-500 text-sm mt-1">{validationErrors.cardNumber}</p>
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-1">{validationErrors.cardNumber}</p>
                         )}
                     </div>
 
@@ -422,7 +425,7 @@ const CheckoutComponent = () => {
                     <div className="grid grid-cols-2 gap-4">
                         {/* Expiry Date */}
                         <div className="flex flex-col">
-                            <label className="block text-gray-300 font-semibold mb-2">
+                            <label className="block text-gray-500 dark:text-gray-300 font-semibold mb-2">
                                 Expiry Date
                             </label>
                             <input
@@ -431,20 +434,19 @@ const CheckoutComponent = () => {
                                 value={creditCardDetails.expiryDate}
                                 onChange={handleInputChange}
                                 className={`w-full p-2 rounded-2xl border ${
-                                    validationErrors.expiryDate ? 'border-red-500' : 'border-gray-600'
-                                } bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                                    validationErrors.expiryDate ? 'border-red-500 dark:border-red-400' : 'border-gray-600 dark:border-gray-500'
+                                } text-gray-500 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400`}
                                 placeholder="MM/YY"
                                 maxLength="5"
                             />
-                            {/* Reserve space for error message */}
-                            <p className="text-red-500 text-sm mt-1 min-h-[1.25rem]">
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-1 min-h-[1.25rem]">
                                 {validationErrors.expiryDate || ''}
                             </p>
                         </div>
 
                         {/* CVV */}
                         <div className="flex flex-col">
-                            <label className="block text-gray-300 font-semibold mb-2">
+                            <label className="block text-gray-500 dark:text-gray-300 font-semibold mb-2">
                                 CVV
                             </label>
                             <input
@@ -453,13 +455,12 @@ const CheckoutComponent = () => {
                                 value={creditCardDetails.cvv}
                                 onChange={handleInputChange}
                                 className={`w-full p-2 rounded-2xl border ${
-                                    validationErrors.cvv ? 'border-red-500' : 'border-gray-600'
-                                } bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                                    validationErrors.cvv ? 'border-red-500 dark:border-red-400' : 'border-gray-600 dark:border-gray-500'
+                                } text-gray-500 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400`}
                                 placeholder="123"
                                 maxLength="4"
                             />
-                            {/* Reserve space for error message */}
-                            <p className="text-red-500 text-sm mt-1 min-h-[1.25rem]">
+                            <p className="text-red-500 dark:text-red-400 text-sm mt-1 min-h-[1.25rem]">
                                 {validationErrors.cvv || ''}
                             </p>
                         </div>
@@ -468,19 +469,20 @@ const CheckoutComponent = () => {
                     {/* Place Order Button */}
                     <button
                         onClick={handleCheckout}
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-2xl transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-2xl transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                     >
                         Place Order
                     </button>
                 </div>
-
             </aside>
 
             {/* Address Modal */}
             <AddressModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onAddressAdded={handleAddressAdded}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setAddressUpdateState(true);
+                }}
             />
         </div>
     );

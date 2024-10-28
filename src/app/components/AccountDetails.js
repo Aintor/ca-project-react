@@ -4,7 +4,7 @@ import LoadingComponent from './LoadingComponent';
 
 const AccountDetails = () => {
     const [userDetails, setUserDetails] = useState({
-        username: '',
+        name: '',
         email: '',
         phone: '',
     });
@@ -22,12 +22,12 @@ const AccountDetails = () => {
                 const response = await axios.get(`${apiBaseUrl}/account/detail`, {
                     withCredentials: true,
                 });
-                console.log(response.data);
                 if (response.data) {
+                    console.log(response.data);
                     setUserDetails({
-                        username: response.data.username,
-                        email: response.data.email,
-                        phone: response.data.phone,
+                        name: response.data.name ? response.data.name : '',
+                        email: response.data.email ? response.data.email : '',
+                        phone: response.data.phone ? response.data.phone : '',
                     });
                 } else {
                     setError(response.data.message || 'Failed to fetch user details.');
@@ -87,11 +87,11 @@ const AccountDetails = () => {
             {error && <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-md">{error}</div>}
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label className="block text-gray-700 dark:text-gray-300">Username</label>
+                    <label className="block text-gray-700 dark:text-gray-300">Name</label>
                     <input
                         type="text"
-                        name="username"
-                        value={userDetails.username}
+                        name="name"
+                        value={userDetails.name}
                         onChange={handleChange}
                         required
                         className="w-full p-2 mt-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"

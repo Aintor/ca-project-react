@@ -18,13 +18,14 @@ const App = () => {
     const [message, setMessage] = useState(null);   // Tracks success message
     const [loginParams, setLoginParams] = useState(null);  // Tracks login params for RequestManager
     const { login, isAuthenticated } = useAuth();
+    console.log('login');
 
     useEffect(() => {
         if (isAuthenticated) {
             if (redirect) {
                 router.push(redirect);
             } else {
-                router.push('/');
+                router.push('/account');
             }
         }
     }, [isAuthenticated, redirect, router]);

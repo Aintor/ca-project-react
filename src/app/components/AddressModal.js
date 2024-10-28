@@ -52,7 +52,6 @@ const AddressModal = ({ isOpen, onClose, onAddressAdded }) => {
 
             // Handle success response
             if (response.data.success) {
-                onAddressAdded(response.data.address);
                 onClose();
             } else {
                 setError(response.data.message || 'Failed to add address. Please try again.');
