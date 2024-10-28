@@ -106,7 +106,7 @@ const Navbar = () => {
                         <div className="absolute inset-y-0 right-0 flex items-center space-x-4">
                             <button
                                 onClick={toggleSearch}
-                                aria-label="Search apple.com"
+                                aria-label="Search"
                                 className="hover:bg-gray-200/50 hover:text-black dark:hover:bg-gray-700/50 dark:hover:text-white p-2 rounded-md transition-colors duration-200 cursor-pointer"
                             >
                                 <svg

@@ -109,9 +109,9 @@ const ProductPage = ({ productData }) => {
                                 reviews.map((review, index) => (
                                     <Comment
                                         key={index}
-                                        userName={review.userName}
+                                        userName={review.reviewer}
                                         rating={review.rating}
-                                        date={review.timestamp}
+                                        date={review.date}
                                         comment={review.comment}
                                     />
                                 ))

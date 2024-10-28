@@ -17,21 +17,20 @@ const App = () => {
     const keyword = searchParams.get('search');
 
     const [endpoint, setEndpoint] = React.useState('');
+    const [refreshKey, setRefreshKey] = React.useState(false);
     const [method, setMethod] = React.useState('GET');
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState('');
     const [products, setProducts] = React.useState([]);
 
-    // Extract searchParams.toString() into a variable
-    const searchParamsString = searchParams.toString();
-
     // Clear previous state variables
     useEffect(() => {
         // Clear previous states on every path change
+        setRefreshKey(!refreshKey);
         setProducts([]);
         setError('');
-        setLoading(true);
-    }, [pathname, searchParamsString]);  // Dependencies on pathname, trigger on every path change
+        setLoading(false);
+    }, [pathname]);  // Dependencies on pathname, trigger on every path change
 
     // Use searchParamsString as a dependency
     useEffect(() => {
@@ -97,7 +96,7 @@ const App = () => {
     }, [categoryId]);
 
     return (
-        <div key={searchParamsString}> {/* Use searchParamsString as a key */}
+        <div key={refreshKey}> {/* Use searchParamsString as a key */}
             <Navbar />
             <div style={{ marginTop: '4rem' }}>
                 {endpoint && (

@@ -96,7 +96,7 @@ const ProductCard = ({ image, feature, name, price, id, originPrice }) => {
             </div>
 
             {/* Display product information immediately */}
-            <div className="relative p-4 bg-white dark:bg-gray-800 rounded-b-2xl">
+            <div className="relative p-4 bg-white dark:bg-gray-800 rounded-b-2xl h-full">
                 <h3 className="text-2xl font-extrabold text-gray-900 dark:text-gray-200">{name}</h3>
 
                 <div className="mt-2">
