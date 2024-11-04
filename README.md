@@ -1,1 +1,2 @@
-**Line 90 of src/app/components/RequestManager.js should be denoted if you want to use the local server**
+Change the env.local file to modify the server location.
+The backend is in https://gitee.com/Alexasher/caproject.git
